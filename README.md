@@ -20,6 +20,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 ### editor.wordWrap改为on即可自动换行
+### 字体使用Cascadia Code，设置连字体"editor.fontLigatures": false,
 <!-- Beautify
  美化 javascript, JSON, CSS, Sass, 以及 HTML 。一般需要配合.jsbeautifyrc使用
 
@@ -64,3 +65,5 @@ Vue VSCode Snippets
 
 npm Intellisense
  import、require npm模块是自动补全 -->
+
+### editsettings保存了vscode设置

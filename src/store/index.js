@@ -6,7 +6,10 @@ import actions from '@/store/action'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    token: '',
+    currentPage: '未知页面'//当前页面标题
+  },
   mutations,
   actions,
   modules: {}
