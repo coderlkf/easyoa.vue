@@ -1,12 +1,17 @@
 <template>
   <div>
-    <el-menu :collapse="isCollapse">
+    <el-menu>
       <div class="el-logo">
         <router-link to="/"
-                     tag="span">
-          <slot>
-            系统名称
-          </slot>
+                     tag="div">
+          <img class="logo"
+               src="/logo.png"
+               alt="">
+          <div class="title">
+            <slot>
+              系统名称
+            </slot>
+          </div>
         </router-link>
       </div>
       <div v-if="menus.length>0">
@@ -65,5 +70,14 @@ export default {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
+}
+.logo {
+  width: 60px;
+  float: left;
+  margin-left: 20px;
+  margin-right: 5px;
+}
+.title {
+  text-align: left;
 }
 </style>

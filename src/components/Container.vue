@@ -1,17 +1,13 @@
 <template>
   <el-container>
     <!-- 侧边栏 -->
-    <el-aside :class="isCollapse?'asideNotCollapse':'asideCollapse'">
+    <el-aside>
       <!-- 系统名称 -->
-      <sidebar :isCollapse="isCollapse"
-               :menus="menus">{{sysConfig.projname}}</sidebar>
+      <sidebar :menus="menus">{{sysConfig.projname}}</sidebar>
     </el-aside>
     <el-container>
       <!-- 头部 -->
       <el-header>
-        <i class="collapse"
-           :class="isCollapse?'el-icon-d-arrow-right':'el-icon-d-arrow-left'"
-           @click="isCollapse=!isCollapse"></i>
         <span class="currentPage">{{$store.state.currentPage}}</span>
         <!-- 登录信息，设置 -->
         <el-dropdown :hide-on-click="false">
@@ -99,7 +95,6 @@ export default {
         headurl: '/logo.png',
         role: '系统管理员'
       },
-      isCollapse: false,
       menus: menus
     }
   },
@@ -125,6 +120,7 @@ export default {
 .el-header {
   padding: 0 !important;
   background-color: #2b343d;
+  border-left: 1px solid antiquewhite;
 }
 .collapse {
   color: antiquewhite;
