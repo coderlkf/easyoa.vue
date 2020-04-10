@@ -46,6 +46,7 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
+//将当前页标题设置到sore
 router.afterEach((to, from) => {
   store.commit('setCurrentPage', to.name)
 })

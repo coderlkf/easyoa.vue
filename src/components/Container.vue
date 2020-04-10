@@ -101,6 +101,7 @@ export default {
   methods: {
     loginOut () {
       this.$store.commit("saveToken", '');
+      this.$router.replace('/login')
     }
   },
   components: { sidebar }

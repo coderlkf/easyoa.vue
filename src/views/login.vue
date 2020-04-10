@@ -55,8 +55,6 @@
 </template>
 
 <script>
-
-
 export default {
   name: 'login',
   data () {
@@ -88,7 +86,6 @@ export default {
       this.$refs.ruleForm2.resetFields();
     },
     loginAccount () {
-
       if (this.account3 == "测试账号1") {
         this.ruleForm2.account = "test";
         this.ruleForm2.checkPass = "test";
@@ -124,62 +121,19 @@ export default {
           const token = '测试token'
           _this.$store.commit("saveToken", token);
           //刷新
-          _this.$router.go(0)
+          _this.$router.replace('/')
         } else {
           console.log('error submit!!');
           return false;
         }
       });
-    },
-    // 获取用户数据
-    getUserInfoByToken (token) {
-      var _this = this;
-      var loginParams = { token: token };
-      getUserByToken(loginParams).then(data => {
-
-        if (!data.success) {
-          _this.$message({
-            message: data.message,
-            type: 'error'
-          });
-        } else {
-          // _this.closeAlert()
-          // _this.openAlert("接收到用户数据，开始初始化路由树...")
-          _this.loginStr = "接收到用户数据，开始初始化路由树...";
-
-
-          window.localStorage.user = JSON.stringify(data.response)
-          if (data.response.uID > 0) {
-            _this.GetNavigationBar(data.response.uID)
-          }
-        }
-      });
     }
-  },
-  mounted () {
-    // window.localStorage.clear()
-    console.info('%c 本地缓存已清空!', "color:green")
-
-  },
+  }
 }
 
 </script>
 
 <style>
-.bg {
-  margin: 0px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background: url(../assets/loginbck.png) no-repeat top left;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-}
-
 .login-container {
   -webkit-border-radius: 5px;
   border-radius: 5px;
@@ -205,9 +159,36 @@ export default {
   margin: 0px 0px 25px 0px;
 }
 
-li {
+.containerLogin {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 80px 0;
+  height: 400px;
+  text-align: center;
 }
 
+.containerLogin h1 {
+  font-size: 40px;
+  -webkit-transition-duration: 1s;
+  transition-duration: 1s;
+  -webkit-transition-timing-function: ease-in-put;
+  transition-timing-function: ease-in-put;
+  font-weight: 200;
+}
+
+.bg {
+  margin: 0px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: url(../assets/loginbck.png) no-repeat top left;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
 .wrapper {
   background: #50a3a2;
   background: -webkit-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
@@ -224,23 +205,6 @@ li {
   -webkit-transform: translateY(85px);
   -ms-transform: translateY(85px);
   transform: translateY(85px);
-}
-
-.containerLogin {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 80px 0;
-  height: 400px;
-  text-align: center;
-}
-
-.containerLogin h1 {
-  font-size: 40px;
-  -webkit-transition-duration: 1s;
-  transition-duration: 1s;
-  -webkit-transition-timing-function: ease-in-put;
-  transition-timing-function: ease-in-put;
-  font-weight: 200;
 }
 
 .bg-bubbles {

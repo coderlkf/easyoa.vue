@@ -93,3 +93,27 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### editsettings.txt 保存了 vscode 设置
 
 ### vuenote.js 保存了知识点笔记
+
+### ids4 请求 token
+
+### http://localhost:5002/connect/token
+
+### client_id
+
+### webapi
+
+### username
+
+### admins
+
+### password
+
+### BlogIdp123\$InitPwd
+
+### grant_type
+
+### password
+
+### client_secret
+
+### secret
