@@ -1,69 +1,95 @@
 # easyoa.vue
 
 ## Project setup
+
 ```
 npm install
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
 
 ### Compiles and minifies for production
+
 ```
 npm run build
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
+### editor.wordWrap 改为 on 即可自动换行
 
-### editor.wordWrap改为on即可自动换行
-### 字体使用Cascadia Code，设置连字体"editor.fontLigatures": false,
-<!-- Beautify
- 美化 javascript, JSON, CSS, Sass, 以及 HTML 。一般需要配合.jsbeautifyrc使用
+### 字体使用 Cascadia Code，设置连字体"editor.fontLigatures": false,
 
-Eslint
- 检查代码是否符合规范
+### 插件----------------------------
 
-GitLens
- Git提示
+### Beautify
 
-language-stylus
- stylus语法支持
+###   美化 javascript, JSON, CSS, Sass, 以及 HTML 。一般需要配合.jsbeautifyrc 使用
 
-Markdown All in One
- Markdown语法快捷键
+### Eslint
 
-Material Icon Theme
- 多样化的文件图标
+###   检查代码是否符合规范
 
-One Dark Pro
- 一款深黑色的主题
+### GitLens
 
-Path Intellisense
- 相对、绝对路径提示
+###  Git 提示
 
-Prettier formatter
- 代码格式化
+### language-stylus
 
-Python
- Python支持
+###  stylus 语法支持
 
-React Native Snippet
- React Native 语法片段扩展
+### Markdown All in One
 
-Setting Sync
- 同步本地vscode编辑器的设置到github
+###  Markdown 语法快捷键
 
-Vetur
- Vue语法支持。包括语法高亮、语法代码提示、语法lint检测等
+### Material Icon Theme
 
-Vue VSCode Snippets
- Vue 语法片段扩展
+###   多样化的文件图标
 
-npm Intellisense
- import、require npm模块是自动补全 -->
+### One Dark Pro
 
-### editsettings保存了vscode设置
+###   一款深黑色的主题
+
+### Path Intellisense
+
+###   相对、绝对路径提示
+
+### Prettier formatter
+
+###   代码格式化
+
+### Python
+
+### Python 支持
+
+### React Native Snippet
+
+###  React Native 语法片段扩展
+
+### Setting Sync
+
+###   同步本地 vscode 编辑器的设置到 github
+
+### Vetur
+
+###  Vue 语法支持。包括语法高亮、语法代码提示、语法 lint 检测等
+
+### Vue VSCode Snippets
+
+###  Vue 语法片段扩展
+
+### npm Intellisense
+
+###  import、require npm 模块是自动补全
+
+### -----------------------------------
+
+### editsettings.txt 保存了 vscode 设置
+
+### vuenote.js 保存了知识点笔记
