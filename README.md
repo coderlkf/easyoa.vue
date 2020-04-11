@@ -32,19 +32,19 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ###   美化 javascript, JSON, CSS, Sass, 以及 HTML 。一般需要配合.jsbeautifyrc 使用
 
-### Eslint
+### Eslint--不装
 
 ###   检查代码是否符合规范
 
-### GitLens
+### GitLens--不装
 
 ###  Git 提示
 
-### language-stylus
+### language-stylus--不装
 
 ###  stylus 语法支持
 
-### Markdown All in One
+### Markdown All in One--不装
 
 ###  Markdown 语法快捷键
 
@@ -52,7 +52,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ###   多样化的文件图标
 
-### One Dark Pro
+### One Dark Pro--不装
 
 ###   一款深黑色的主题
 
@@ -64,7 +64,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ###   代码格式化
 
-### Python
+### Python--不装
 
 ### Python 支持
 
@@ -72,7 +72,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ###  React Native 语法片段扩展
 
-### Setting Sync
+### Setting Sync--不装
 
 ###   同步本地 vscode 编辑器的设置到 github
 
@@ -117,3 +117,11 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### client_secret
 
 ### secret
+
+
+### ---------------vue安装命令---------------
+npm install -g @vue/cli
+
+vue --version  //查看版本
+
+vue create hello-world //创建一个项目
