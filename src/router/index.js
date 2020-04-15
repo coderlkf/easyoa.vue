@@ -7,6 +7,8 @@ import welcome from '../views/welcome.vue'
 import thinks from '../views/thinks.vue'
 import login from '../views/login.vue'
 
+//系统管理
+import menu from '../views/sysmanager/menu.vue'
 
 Vue.use(VueRouter)
 
@@ -25,6 +27,11 @@ const routes = [
     path: "/login",
     name: "登录",
     component: login
+  },
+  {
+    path: "/menu",
+    name: "菜单管理",
+    component: menu
   }
 ]
 

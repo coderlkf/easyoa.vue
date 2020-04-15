@@ -47,44 +47,48 @@
 import { sysConfig } from '@/common/config.js'
 //菜单组件导入
 import sidebar from './Sidebar'
-
-const menus = []
-menus.push({
-  id: 1,
-  name: '主菜单1',
-  path: '/zcd/1',
-  icon: 'el-icon-user',
-  hasChildren: true,
-  children: [{
-    id: 101,
-    name: '子菜单1',
-    hasChildren: false,
-    path: '/zcd/1',
-    children: []
-  }]
-})
-menus.push({
-  id: 2,
-  name: '主菜单2',
-  icon: 'el-icon-user',
-  path: '/zcd/1',
-  hasChildren: true,
-  children: [{
-    id: 201,
-    name: '子菜单2',
-    hasChildren: false,
-    path: '/zcd/1',
-    children: []
-  }]
-})
-menus.push({
-  id: 3,
-  name: '致谢页',
-  icon: 'el-icon-sunny',
-  path: '/thinks',
-  hasChildren: false,
-  children: []
-})
+//api导入
+import { getMenu } from '../api/api'
+//菜单
+{
+  // const menus = []
+  // menus.push({
+  //   id: 1,
+  //   name: '主菜单1',
+  //   path: '/zcd/1',
+  //   icon: 'el-icon-user',
+  //   hasChildren: true,
+  //   children: [{
+  //     id: 101,
+  //     name: '子菜单1',
+  //     hasChildren: false,
+  //     path: '/zcd/1',
+  //     children: []
+  //   }]
+  // })
+  // menus.push({
+  //   id: 2,
+  //   name: '主菜单2',
+  //   icon: 'el-icon-user',
+  //   path: '/zcd/1',
+  //   hasChildren: true,
+  //   children: [{
+  //     id: 201,
+  //     name: '子菜单2',
+  //     hasChildren: false,
+  //     path: '/zcd/1',
+  //     children: []
+  //   }]
+  // })
+  // menus.push({
+  //   id: 3,
+  //   name: '致谢页',
+  //   icon: 'el-icon-sunny',
+  //   path: '/thinks',
+  //   hasChildren: false,
+  //   children: []
+  // })
+}
 export default {
   name: 'container',
   data: () => {
@@ -95,7 +99,7 @@ export default {
         headurl: '/logo.png',
         role: '系统管理员'
       },
-      menus: menus
+      menus: []
     }
   },
   methods: {
@@ -103,6 +107,9 @@ export default {
       this.$store.commit("saveToken", '');
       this.$router.replace('/login')
     }
+  },
+  created () {
+    getTreeMenu().then(res => this.menus = res)
   },
   components: { sidebar }
 }
