@@ -48,7 +48,7 @@ import { sysConfig } from '@/common/config.js'
 //菜单组件导入
 import sidebar from './Sidebar'
 //api导入
-import { getMenu } from '../api/api'
+import { getTreeMenu } from '../api/api'
 //菜单
 {
   // const menus = []
@@ -106,10 +106,25 @@ export default {
     loginOut () {
       this.$store.commit("saveToken", '');
       this.$router.replace('/login')
-    }
+    },
   },
   created () {
-    getTreeMenu().then(res => this.menus = res)
+    getTreeMenu().then(res => {
+      console.log(res)
+      if (res.issuccess) {
+        this.$notify({
+          type: "success",
+          message: `获取菜单成功`,
+          duration: 3000
+        })
+        this.menus = res.result
+      }
+      else
+        this.$notify({
+          type: "error",
+          message: `获取菜单失败`
+        })
+    })
   },
   components: { sidebar }
 }
@@ -173,5 +188,9 @@ export default {
   line-height: 60px;
   color: antiquewhite;
   margin: 20px;
+}
+/* 分页样式 */
+.pagination {
+  text-align: center;
 }
 </style>

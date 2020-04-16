@@ -26,6 +26,7 @@
                            :to="cmenu.path"
                            :key="index+''+cindex">
                 <el-menu-item :index="index+'-'+cindex">
+                  <i :class="cmenu.icon"></i>
                   {{cmenu.name}}
                 </el-menu-item>
               </router-link>

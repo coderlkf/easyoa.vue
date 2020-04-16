@@ -55,6 +55,7 @@ router.beforeEach((to, from, next) => {
 
 //将当前页标题设置到sore
 router.afterEach((to, from) => {
+  document.title = "EASYOA-" + to.name
   store.commit('setCurrentPage', to.name)
 })
 
