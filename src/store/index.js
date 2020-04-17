@@ -7,8 +7,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: '',
-    currentPage: '未知页面'//当前页面标题
+    token: null,
+    tokenExpire: null,
+    currentPage: '未知页面',//当前页面标题
+    uinfo: {}
   },
   mutations,
   actions,

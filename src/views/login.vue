@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { login } from '../api/api'
+
 export default {
   name: 'login',
   data () {
@@ -64,8 +66,8 @@ export default {
       logining: false,
       loginingMock: false,
       ruleForm2: {
-        account: 'test',
-        checkPass: 'test'
+        account: 'admin',
+        checkPass: '123456'
       },
       account3: '测试账号1',
       rules2: {
@@ -87,8 +89,8 @@ export default {
     },
     loginAccount () {
       if (this.account3 == "测试账号1") {
-        this.ruleForm2.account = "test";
-        this.ruleForm2.checkPass = "test";
+        this.ruleForm2.account = "admin";
+        this.ruleForm2.checkPass = "123456";
       } else if (this.account3 == "测试账号2") {
         this.ruleForm2.account = "test2";
         this.ruleForm2.checkPass = "test2";
@@ -114,14 +116,30 @@ export default {
       this.$refs.ruleForm2.validate((valid) => {
         if (valid) {
           this.logining = true;
-          var loginParams = { name: this.ruleForm2.account, pass: this.ruleForm2.checkPass };
+          var loginParams = { userName: this.ruleForm2.account, passWord: this.ruleForm2.checkPass };
 
           _this.loginStr = "登录中...";
 
-          const token = '测试token'
-          _this.$store.commit("saveToken", token);
-          //刷新
-          _this.$router.replace('/')
+          login(loginParams).then(res => {
+            if (res.issuccess) {
+              _this.$store.commit("saveToken", res.result.token);
+              var curTime = new Date();
+              // 过期时间暂定一个小时
+              var expiredate = new Date(curTime.setSeconds(curTime.getSeconds() + 60 * 60));
+              _this.$store.commit("saveTokenExpire", expiredate);
+              window.localStorage.refreshtime = expiredate;
+              window.localStorage.expires_in = 60 * 60;
+
+              _this.$store.commit("saveUinfo", res.result.uinfo);
+              _this.$router.replace('/')
+            }
+            else
+              _this.$message({
+                message: '登录失败!',
+                title: '提示',
+                type: 'error'
+              })
+          })
         } else {
           console.log('error submit!!');
           return false;

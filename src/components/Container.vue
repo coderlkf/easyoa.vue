@@ -110,7 +110,7 @@ export default {
   },
   created () {
     getTreeMenu().then(res => {
-      console.log(res)
+      // console.log(res)
       if (res.issuccess) {
         this.$notify({
           type: "success",
@@ -124,6 +124,8 @@ export default {
           type: "error",
           message: `获取菜单失败`
         })
+    }).catch(err => {
+      console.log(err)
     })
   },
   components: { sidebar }

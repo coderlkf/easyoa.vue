@@ -5,6 +5,7 @@ import store from '../store/index'
 //引入页面
 import welcome from '../views/welcome.vue'
 import thinks from '../views/thinks.vue'
+import target from '../views/target.vue'
 import login from '../views/login.vue'
 
 //系统管理
@@ -22,6 +23,11 @@ const routes = [
     path: "/thinks",
     name: "致谢页",
     component: thinks
+  },
+  {
+    path: "/target",
+    name: "学习目标",
+    component: target
   },
   {
     path: "/login",

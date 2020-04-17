@@ -11,14 +11,19 @@
         </el-input>
       </el-col>
       <el-col :span="1">
-        <el-button @click="dialogVisible = true"
+        <el-button @click="addDialogVisible = true"
                    type="primary">新增</el-button>
       </el-col>
     </el-row>
 
     <!-- 菜单表格 -->
     <el-table class="defaulttable"
+              ref="menutable"
+              @selection-change="handleSelectionChange"
               :data="menus">
+      <el-table-column type="selection"
+                       width="50">
+      </el-table-column>
       <el-table-column prop="id"
                        label="id"
                        sortable
@@ -74,65 +79,108 @@
                      layout="prev, pager, next"
                      :page-size="10"
                      :total="total"
-                     @current-change="pageChange">
+                     @current-change="handlePageChange">
       </el-pagination>
     </el-col>
 
-    <!-- 弹出新增/编辑页 -->
+    <!-- 新增窗口 -->
     <el-dialog title="新增菜单"
-               :visible.sync="dialogVisible"
+               :visible.sync="addDialogVisible"
                width="50%">
-      <el-form :model="menuForm"
+      <el-form :model="addMenuForm"
                :rules="rules"
                label-width="80px"
-               ref="menuForm">
-        <el-form-item label="id">
-          <el-input v-model="menuForm.id"
-                    :disabled="true"></el-input>
-        </el-form-item>
+               ref="addMenuForm">
         <el-form-item label="菜单名称"
                       prop="name">
-          <el-input v-model="menuForm.name"></el-input>
+          <el-input v-model="addMenuForm.name"></el-input>
         </el-form-item>
         <el-form-item label="图标">
-          <el-input v-model="menuForm.icon"></el-input>
+          <el-input v-model="addMenuForm.icon"></el-input>
         </el-form-item>
         <el-form-item label="路由">
-          <el-input v-model="menuForm.path"></el-input>
+          <el-input v-model="addMenuForm.path"></el-input>
         </el-form-item>
         <el-form-item label="api">
-          <el-input v-model="menuForm.actionList"></el-input>
+          <el-input v-model="addMenuForm.actionList"></el-input>
         </el-form-item>
         <el-form-item label="说明">
-          <el-input v-model="menuForm.description"></el-input>
+          <el-input v-model="addMenuForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="是否禁用">
-          <el-switch v-model="menuForm.isEnable"
+        <el-form-item label="是否启用">
+          <el-switch v-model="addMenuForm.isEnable"
                      active-color="#13ce66"
                      inactive-color="#ff4949"></el-switch>
         </el-form-item>
         <el-form-item label="父级菜单">
-          <el-input v-model="menuForm.parentId"></el-input>
+          <el-input v-model="addMenuForm.parentId.number"></el-input>
         </el-form-item>
         <el-form-item label="权限">
-          <el-input v-model="menuForm.permissionCode"></el-input>
+          <el-input v-model="addMenuForm.permissionCode"></el-input>
         </el-form-item>
         <el-form-item label="排序值">
-          <el-input v-model="menuForm.sortId"></el-input>
+          <el-input v-model.number="addMenuForm.sortId"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="addDialogVisible = false">取 消</el-button>
         <el-button type="primary"
-                   @click="add('menuForm')">确 定</el-button>
+                   @click="add('addMenuForm')">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 编辑窗口 -->
+    <el-dialog title="编辑菜单"
+               :visible.sync="editDialogVisible"
+               width="50%">
+      <el-form :model="addMenuForm"
+               :rules="rules"
+               label-width="80px"
+               ref="editMenuForm">
+        <el-form-item label="菜单名称"
+                      prop="name">
+          <el-input v-model="addMenuForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="图标">
+          <el-input v-model="addMenuForm.icon"></el-input>
+        </el-form-item>
+        <el-form-item label="路由">
+          <el-input v-model="addMenuForm.path"></el-input>
+        </el-form-item>
+        <el-form-item label="api">
+          <el-input v-model="addMenuForm.actionList"></el-input>
+        </el-form-item>
+        <el-form-item label="说明">
+          <el-input v-model="addMenuForm.description"></el-input>
+        </el-form-item>
+        <el-form-item label="是否启用">
+          <el-switch v-model="addMenuForm.isEnable"
+                     active-color="#13ce66"
+                     inactive-color="#ff4949"></el-switch>
+        </el-form-item>
+        <el-form-item label="父级菜单">
+          <el-input v-model="addMenuForm.parentId.number"></el-input>
+        </el-form-item>
+        <el-form-item label="权限">
+          <el-input v-model="addMenuForm.permissionCode"></el-input>
+        </el-form-item>
+        <el-form-item label="排序值">
+          <el-input v-model.number="addMenuForm.sortId"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="edit('editMenuForm')">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getMenu } from '../../api/api'
+import { getMenu, addMenu, updateMenu, delMenu, delMenus } from '../../api/api'
 
 export default {
   data () {
@@ -140,72 +188,165 @@ export default {
       searchkey: '',
       menus: [],
       total: 0,
-      dialogVisible: false,
-      menuForm: {
+      addDialogVisible: false,
+      editDialogVisible: false,
+      addMenuForm: {
         id: 0,
         name: '',
         icon: '',
         path: '',
         actionList: '',
         description: '',
+        sortId: 0,
         isEnable: true,
         permissionCode: 'read,add,edit,delete',
-        parentId: '0'
+        parentId: 0,
       },
       rules: {
         name: [
           { required: true, message: '请输入菜单名称', trigger: 'blur' },
           { min: 3, max: 10, message: '长度应该在3-10个字符', trigger: 'blur' }
         ]
-      }
+      },
+      selectids: [] // 选中的id数组
     }
   },
   created () {
-    getMenu().then(res => {
-      console.log(res)
-      if (res.issuccess) {
-        this.menus = res.result.list
-        this.total = res.result.total
-      }
-      else
-        this.$notify({
-          title: '没有数据',
-          type: 'warning'
-        })
-    })
+    this.getmenus()
   },
   methods: {
     search () {
       // TODO 搜索菜单
-      console.log(this.searchkey)
+      //console.log(this.searchkey)
     },
     add (formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$message({
-            message: '提交',
-            type: 'success'
+          //console.log(this.addMenuForm)
+          addMenu(this.addMenuForm).then(res => {
+            if (res.issuccess) {
+              this.$message({
+                message: '添加成功,左侧菜单需要刷新/重登',
+                type: 'success'
+              })
+              // 隐藏新增窗口
+              this.addDialogVisible = false
+              this.getmenus()
+            }
           })
         }
         else {
           this.$message({
-            message: '提交失败',
+            message: '添加失败',
             type: 'error'
           })
         }
       })
     },
-    handleEdit (index, row) {
-      console.log(index, row);
-    },
-    handleDelete (index, row) {
-      console.log(index, row);
-    },
-    pageChange (page) {
-      console.log('改变了页码:' + page)
+    edit (formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          updateMenu(this.addMenuForm).then(res => {
+            if (res.issuccess) {
+              this.$message({
+                message: '编辑成功,左侧菜单需要刷新/重登',
+                type: 'success'
+              })
+              // 隐藏编辑窗口
+              this.editDialogVisible = false
+              // 重新获取菜单
+              this.getmenus()
+            }
+            else {
+              this.$message({
+                message: '编辑失败',
+                type: 'error'
+              })
+            }
+          })
+        }
+      })
     },
     delByIds () {
-
+      console.log('你选择了：' + this.selectids)
+      const _this = this
+      this.$confirm('真的要删除' + this.selectids + '吗', '请确认', {
+        type: 'error',
+        callback (action) {
+          if (action == 'confirm') {
+            delMenus({ ids: _this.selectids.join(',') }).then(res => {
+              if (res.issuccess) {
+                _this.$message({
+                  message: '删除成功,左侧菜单需要刷新/重登',
+                  type: 'success'
+                })
+                // 重新获取菜单
+                _this.getmenus()
+              }
+              else {
+                _this.$message({
+                  message: '删除失败',
+                  type: 'error'
+                })
+              }
+            })
+          }
+        }
+      })
+    },
+    getmenus () {
+      getMenu().then(res => {
+        // console.log(res)
+        if (res.issuccess) {
+          this.menus = res.result.list
+          this.total = res.result.total
+        }
+        else
+          this.$notify({
+            title: '没有数据',
+            type: 'warning'
+          })
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    handleEdit (index, row) {
+      this.addMenuForm = row
+      this.editDialogVisible = true
+      // console.log(index, row);
+    },
+    handleDelete (index, row) {
+      // console.log(index, row);
+      const _this = this
+      this.$confirm('真的要删除' + row.name + '吗', '请确认', {
+        type: 'error',
+        callback (action) {
+          if (action == 'confirm') {
+            delMenu({ id: row.id }).then(res => {
+              if (res.issuccess) {
+                _this.$message({
+                  message: '删除成功,左侧菜单需要刷新/重登',
+                  type: 'success'
+                })
+                // 重新获取菜单
+                _this.getmenus()
+              }
+              else {
+                _this.$message({
+                  message: '删除失败',
+                  type: 'error'
+                })
+              }
+            })          }
+        }
+      })
+    },
+    handlePageChange (page) {
+      console.log('改变了页码:' + page)
+    },
+    handleSelectionChange (row) {
+      // 获取选中的行的id
+      this.selectids = row.map(r => r.id)
     }
   }
 }
