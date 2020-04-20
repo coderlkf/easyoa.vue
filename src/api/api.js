@@ -10,8 +10,8 @@ export const getTreeMenu = () => {
   return req.get('menu/treelist').then(res => res.data)
 }
 // 获取菜单列表
-export const getMenu = () => {
-  return req.get('menu/list').then(res => res.data)
+export const getMenu = params => {
+  return req.get('menu/list', { params }).then(res => res.data)
 }
 // 添加菜单
 export const addMenu = params => {

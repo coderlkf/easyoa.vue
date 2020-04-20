@@ -54,7 +54,7 @@
                        label="权限"></el-table-column>
       <el-table-column prop="sortId"
                        label="排序值"
-                       width="50"></el-table-column>
+                       width="60"></el-table-column>
       <el-table-column prop="createTime"
                        label="创建时间"
                        sortable></el-table-column>
@@ -217,7 +217,10 @@ export default {
   methods: {
     search () {
       // TODO 搜索菜单
-      //console.log(this.searchkey)
+      let params = {
+        searchKey: this.searchkey
+      }
+      this.getmenus(params)
     },
     add (formName) {
       this.$refs[formName].validate(valid => {
@@ -294,8 +297,8 @@ export default {
         }
       })
     },
-    getmenus () {
-      getMenu().then(res => {
+    getmenus (params) {
+      getMenu(params).then(res => {
         // console.log(res)
         if (res.issuccess) {
           this.menus = res.result.list
@@ -342,7 +345,11 @@ export default {
       })
     },
     handlePageChange (page) {
-      console.log('改变了页码:' + page)
+      let params = {
+        searchKey: this.searchkey,
+        pageIndex: page
+      }
+      this.getmenus(params)
     },
     handleSelectionChange (row) {
       // 获取选中的行的id
