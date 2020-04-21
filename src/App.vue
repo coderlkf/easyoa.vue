@@ -1,7 +1,14 @@
 <template>
   <div id="app">
-    <container v-if="$store.state.token!=''"></container>
-    <login v-else></login>
+    <transition v-if="!$route.meta.NoNeedHome"
+                name="fade">
+      <container v-if="$store.state.token!=''"></container>
+    </transition>
+    <transition v-else
+                name="fade"
+                mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 

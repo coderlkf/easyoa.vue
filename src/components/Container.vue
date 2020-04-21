@@ -13,17 +13,17 @@
         <el-dropdown :hide-on-click="false">
           <span class="el-dropdown-link">
             <i class="el-icon-s-custom"></i>
-            {{userinfo.name}}
+            {{userinfo.userName}}
             <img class="headimg"
-                 :src="userinfo.headurl"
+                 :src="userinfo.headurl?userinfo.headurl:'/logo.png'"
                  alt="头像">
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item desabled>
               <img class="bighead"
-                   :src="userinfo.headurl"
+                   :src="userinfo.headurl?userinfo.headurl:'/logo.png'"
                    alt="头像">
-              <span class="uname">{{userinfo.name}}
+              <span class="uname">{{userinfo.userName}}
                 <br>
                 <i class="el-icon-s-custom"></i>{{userinfo.role}}</span>
             </el-dropdown-item>
@@ -49,6 +49,7 @@ import { sysConfig } from '@/common/config.js'
 import sidebar from './Sidebar'
 //api导入
 import { getTreeMenu } from '../api/api'
+import router from '../router/index'
 //菜单
 {
   // const menus = []
@@ -104,11 +105,15 @@ export default {
   },
   methods: {
     loginOut () {
+      window.localStorage.removeItem('Token');
+      window.localStorage.removeItem('TokenExpire');
+      window.localStorage.removeItem('refreshtime');
       this.$store.commit("saveToken", '');
       this.$router.replace('/login')
     },
   },
-  created () {
+  mounted () {
+    // 获取左侧导航栏菜单
     getTreeMenu().then(res => {
       // console.log(res)
       if (res.issuccess) {
@@ -127,6 +132,7 @@ export default {
     }).catch(err => {
       console.log(err)
     })
+    this.userinfo = this.$store.state.uinfo
   },
   components: { sidebar }
 }

@@ -32,7 +32,10 @@ const routes = [
   {
     path: "/login",
     name: "登录",
-    component: login
+    component: login,
+    meta: {
+      NoNeedHome: true
+    }
   },
   {
     path: "/menu",
@@ -49,6 +52,9 @@ const router = new VueRouter({
 
 //未登录请求重定向到登录页
 router.beforeEach((to, from, next) => {
+  if (window.localStorage.TokenExpire) {
+    store.commit("saveTokenExpire", window.localStorage.TokenExpire)
+  }
   let token = window.localStorage.getItem("Token")
   if (token) {
     store.commit("saveToken", token);
@@ -64,5 +70,6 @@ router.afterEach((to, from) => {
   document.title = "EASYOA-" + to.name
   store.commit('setCurrentPage', to.name)
 })
+
 
 export default router
