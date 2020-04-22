@@ -12,5 +12,9 @@ export default {
   },
   saveUinfo (state, data) {
     state.uinfo = data
+    window.localStorage.setItem("uinfo", JSON.stringify(data));
+  },
+  saveMainMenu (state, data) {
+    state.mainMenu = data
   }
 }

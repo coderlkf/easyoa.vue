@@ -1,3 +1,4 @@
 export const sysConfig = {
-  projname: "EasyOA"
+  projname: "EasyOA",
+  serverUrl: "http://localhost:5000/"
 }

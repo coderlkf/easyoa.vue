@@ -29,3 +29,20 @@ export const delMenu = params => {
 export const delMenus = params => {
   return req.delete('menu/delbyids', { params }).then(res => res.data)
 }
+
+// 获取用户信息
+export const getUserInfo = () => {
+  return req.get('user').then(res => res.data)
+}
+// 修改用户信息
+export const modifyUserInfo = params => {
+  return req.put('user', params).then(res => res.data)
+}
+// 修改用户密码
+export const modifyPassword = params => {
+  return req.put('user/modifypwd', params).then(res => res.data)
+}
+// 上传头像
+export const uploadHeadUrl = params => {
+  return req.post('user', params).then(res => res.data)
+}

@@ -133,12 +133,15 @@ export default {
               _this.$store.commit("saveUinfo", res.result.uinfo);
               _this.$router.replace('/')
             }
-            else
+            else {
               _this.$message({
                 message: '登录失败!',
                 title: '提示',
                 type: 'error'
               })
+              _this.loginStr = '重新登录'
+              this.logining = false
+            }
           })
         } else {
           console.log('error submit!!');

@@ -113,7 +113,13 @@
                      inactive-color="#ff4949"></el-switch>
         </el-form-item>
         <el-form-item label="父级菜单">
-          <el-input v-model="addMenuForm.parentId.number"></el-input>
+          <el-select v-model.number="addMenuForm.parentId"
+                     placeholder="请选择">
+            <el-option v-for="item in $store.state.mainMenu"
+                       :key="item.id"
+                       :value="item.id"
+                       :label="item.name"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="权限">
           <el-input v-model="addMenuForm.permissionCode"></el-input>
@@ -160,7 +166,14 @@
                      inactive-color="#ff4949"></el-switch>
         </el-form-item>
         <el-form-item label="父级菜单">
-          <el-input v-model="addMenuForm.parentId.number"></el-input>
+          <!-- <el-input v-model="addMenuForm.parentId.number"></el-input> -->
+          <el-select v-model.number="addMenuForm.parentId"
+                     placeholder="请选择">
+            <el-option v-for="item in $store.state.mainMenu"
+                       :key="item.id"
+                       :value="item.id"
+                       :label="item.name"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="权限">
           <el-input v-model="addMenuForm.permissionCode"></el-input>

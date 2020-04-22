@@ -10,7 +10,8 @@ export default new Vuex.Store({
     token: null,
     tokenExpire: null,
     currentPage: '未知页面',//当前页面标题
-    uinfo: {}
+    uinfo: null,
+    mainMenu: []
   },
   mutations,
   actions,

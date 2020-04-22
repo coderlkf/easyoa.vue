@@ -14,21 +14,27 @@
           <span class="el-dropdown-link">
             <i class="el-icon-s-custom"></i>
             {{userinfo.userName}}
-            <img class="headimg"
-                 :src="userinfo.headurl?userinfo.headurl:'/logo.png'"
-                 alt="头像">
+            <el-avatar :size="60"
+                       :src="userinfo.headUrl?sysConfig.serverUrl+userinfo.headUrl:'/logo.png'"
+                       class="headimg"></el-avatar>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item desabled>
-              <img class="bighead"
-                   :src="userinfo.headurl?userinfo.headurl:'/logo.png'"
-                   alt="头像">
-              <span class="uname">{{userinfo.userName}}
-                <br>
-                <i class="el-icon-s-custom"></i>{{userinfo.role}}</span>
+              <router-link to="/myinfo"
+                           tag="div">
+                <el-avatar :size="90"
+                           :src="userinfo.headUrl?sysConfig.serverUrl+userinfo.headUrl:'/logo.png'"></el-avatar>
+                <span class="uname">{{userinfo.userName}}
+                  <i :class="userinfo.gender==1?'el-icon-male':'el-icon-female'"></i>{{userinfo.age}}
+                  <br>
+                  <i class="el-icon-s-custom"></i>{{userinfo.role}}</span>
+              </router-link>
             </el-dropdown-item>
-            <el-dropdown-item divided>个人中心</el-dropdown-item>
-            <el-dropdown-item>修改密码</el-dropdown-item>
+            <el-dropdown-item divided>
+              <router-link to="/myinfo"
+                           tag="span">个人中心</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item @click.native="editpwdDialogVisible = true">修改密码</el-dropdown-item>
             <el-dropdown-item divided
                               @click.native="loginOut">退出登录</el-dropdown-item>
           </el-dropdown-menu>
@@ -39,6 +45,38 @@
         <router-view></router-view>
       </el-main>
     </el-container>
+
+    <!-- 修改密码 -->
+    <el-dialog title="修改密码"
+               :visible.sync="editpwdDialogVisible"
+               width="50%">
+      <el-form :model="editpwd"
+               :rules="editpwdrules"
+               label-width="100px"
+               ref="editpwdForm">
+        <el-form-item label="旧密码"
+                      prop="oldpwd">
+          <el-input v-model="editpwd.oldpwd"
+                    type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码"
+                      prop="newpwd">
+          <el-input v-model="editpwd.newpwd"
+                    type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="重复新密码"
+                      prop="repwd">
+          <el-input v-model="editpwd.repwd"
+                    type="password"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="editpwdDialogVisible = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="edit('editpwdForm')">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-container>
 </template>
 
@@ -48,48 +86,9 @@ import { sysConfig } from '@/common/config.js'
 //菜单组件导入
 import sidebar from './Sidebar'
 //api导入
-import { getTreeMenu } from '../api/api'
+import { getTreeMenu, modifyPassword } from '../api/api'
 import router from '../router/index'
-//菜单
-{
-  // const menus = []
-  // menus.push({
-  //   id: 1,
-  //   name: '主菜单1',
-  //   path: '/zcd/1',
-  //   icon: 'el-icon-user',
-  //   hasChildren: true,
-  //   children: [{
-  //     id: 101,
-  //     name: '子菜单1',
-  //     hasChildren: false,
-  //     path: '/zcd/1',
-  //     children: []
-  //   }]
-  // })
-  // menus.push({
-  //   id: 2,
-  //   name: '主菜单2',
-  //   icon: 'el-icon-user',
-  //   path: '/zcd/1',
-  //   hasChildren: true,
-  //   children: [{
-  //     id: 201,
-  //     name: '子菜单2',
-  //     hasChildren: false,
-  //     path: '/zcd/1',
-  //     children: []
-  //   }]
-  // })
-  // menus.push({
-  //   id: 3,
-  //   name: '致谢页',
-  //   icon: 'el-icon-sunny',
-  //   path: '/thinks',
-  //   hasChildren: false,
-  //   children: []
-  // })
-}
+
 export default {
   name: 'container',
   data: () => {
@@ -100,17 +99,74 @@ export default {
         headurl: '/logo.png',
         role: '系统管理员'
       },
-      menus: []
+      menus: [],
+      editpwdDialogVisible: false,
+      editpwd: {
+        oldpwd: '',
+        newpwd: '',
+        repwd: ''
+      },
+      editpwdrules: {
+        oldpwd: [
+          { required: true, message: '密码是必填的', trigger: 'blur' },
+          { min: 6, max: 16, message: '长度应该在6-16个字符', trigger: 'blur' }
+        ],
+        newpwd: [
+          { required: true, message: '密码是必填的', trigger: 'blur' },
+          { min: 6, max: 16, message: '长度应该在6-16个字符', trigger: 'blur' }
+        ],
+        repwd: [
+          { required: true, message: '密码是必填的', trigger: 'blur' },
+          { min: 6, max: 16, message: '长度应该在6-16个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
     loginOut () {
-      window.localStorage.removeItem('Token');
-      window.localStorage.removeItem('TokenExpire');
-      window.localStorage.removeItem('refreshtime');
-      this.$store.commit("saveToken", '');
+      window.localStorage.removeItem('Token')
+      window.localStorage.removeItem('TokenExpire')
+      window.localStorage.removeItem('refreshtime')
+      this.$store.commit("saveToken", '')
       this.$router.replace('/login')
     },
+    edit (formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          if (this.editpwd.newpwd != this.editpwd.repwd)
+            this.$message({
+              message: '两次输入的密码不同',
+              type: 'error'
+            })
+          if (this.editpwd.oldpwd == this.editpwd.repwd)
+            this.$message({
+              message: '新旧密码不能相同',
+              type: 'error'
+            })
+          let form = new FormData()
+          form.append("oldpwd", this.editpwd.oldpwd)
+          form.append("newpwd", this.editpwd.newpwd)
+          modifyPassword(form).then(res => {
+            if (res.issuccess) {
+              this.$message({
+                message: '修改成功,请重新登录',
+                type: 'success'
+              })
+              // 隐藏编辑窗口
+              this.editpwdDialogVisible = false
+              // 退出登录
+              this.loginOut()
+            }
+            else {
+              this.$message({
+                message: '修改失败',
+                type: 'error'
+              })
+            }
+          })
+        }
+      })
+    }
   },
   mounted () {
     // 获取左侧导航栏菜单
@@ -123,6 +179,11 @@ export default {
           duration: 3000
         })
         this.menus = res.result
+        let mainMenu = [{ id: 0, name: '主菜单' }]
+        for (let m of res.result) {
+          mainMenu.push({ id: m.id, name: m.name })
+        }
+        this.$store.commit('saveMainMenu', mainMenu)
       }
       else
         this.$notify({
@@ -132,7 +193,10 @@ export default {
     }).catch(err => {
       console.log(err)
     })
-    this.userinfo = this.$store.state.uinfo
+    if (this.$store.state.uinfo)
+      this.userinfo = this.$store.state.uinfo
+    else
+      this.userinfo = JSON.parse(window.localStorage.getItem('uinfo'))
   },
   components: { sidebar }
 }
@@ -169,12 +233,8 @@ export default {
   line-height: 60px;
 }
 .headimg {
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  margin: 10px 0 10px 10px;
+  margin: 0 10px;
   float: right;
-  border: #494c4c 1px solid;
 }
 .bighead {
   width: 60px;
@@ -200,5 +260,11 @@ export default {
 /* 分页样式 */
 .pagination {
   text-align: center;
+}
+.el-icon-male {
+  color: cyan;
+}
+.el-icon-female {
+  color: fuchsia;
 }
 </style>

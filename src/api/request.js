@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from '../store';
 import Vue from 'vue';
+import { sysConfig } from '../common/config'
 
 const request = axios.create({
-  timeout: 5000,
-  baseURL: 'http://127.0.0.1:5000/api/'
+  timeout: 10000,
+  baseURL: sysConfig.serverUrl + 'api/'
 })
 
 var storeTemp = store

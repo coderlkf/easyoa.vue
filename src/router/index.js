@@ -2,14 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/index'
 
-//引入页面
+// 引入页面
 import welcome from '../views/welcome.vue'
 import thinks from '../views/thinks.vue'
 import target from '../views/target.vue'
 import login from '../views/login.vue'
 
-//系统管理
+// 系统管理
 import menu from '../views/sysmanager/menu.vue'
+// 用户管理
+import myinfo from '../views/user/userinfo.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +43,11 @@ const routes = [
     path: "/menu",
     name: "菜单管理",
     component: menu
+  },
+  {
+    path: '/myinfo',
+    name: '个人中心',
+    component: myinfo
   }
 ]
 
