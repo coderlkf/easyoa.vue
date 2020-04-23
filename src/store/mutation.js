@@ -16,5 +16,13 @@ export default {
   },
   saveMainMenu (state, data) {
     state.mainMenu = data
+  },
+  saveRoleMap (state, data) {
+    state.roles = data
+    let roleMap = { 0: '系统管理员' }
+    for (let role of data) {
+      roleMap[role.id] = role.name
+    }
+    state.roleMap = roleMap
   }
 }

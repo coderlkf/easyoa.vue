@@ -46,3 +46,8 @@ export const modifyPassword = params => {
 export const uploadHeadUrl = params => {
   return req.post('user', params).then(res => res.data)
 }
+
+// 获取角色
+export const getRoles = () => {
+  return req.get('role').then(res => res.data)
+}

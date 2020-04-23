@@ -27,7 +27,7 @@
                 <span class="uname">{{userinfo.userName}}
                   <i :class="userinfo.gender==1?'el-icon-male':'el-icon-female'"></i>{{userinfo.age}}
                   <br>
-                  <i class="el-icon-s-custom"></i>{{userinfo.role}}</span>
+                  <i class="el-icon-s-custom"></i>{{$store.state.roleMap[userinfo.role]}}</span>
               </router-link>
             </el-dropdown-item>
             <el-dropdown-item divided>
@@ -86,7 +86,7 @@ import { sysConfig } from '@/common/config.js'
 //菜单组件导入
 import sidebar from './Sidebar'
 //api导入
-import { getTreeMenu, modifyPassword } from '../api/api'
+import { getTreeMenu, modifyPassword, getRoles } from '../api/api'
 import router from '../router/index'
 
 export default {
@@ -197,6 +197,11 @@ export default {
       this.userinfo = this.$store.state.uinfo
     else
       this.userinfo = JSON.parse(window.localStorage.getItem('uinfo'))
+    getRoles().then(res => {
+      if (res.issuccess) {
+        this.$store.commit('saveRoleMap', res.result)
+      }
+    })
   },
   components: { sidebar }
 }

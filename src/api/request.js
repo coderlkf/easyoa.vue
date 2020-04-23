@@ -53,15 +53,14 @@ request.interceptors.response.use(
                 message: 'refreshToken success! loading data...',
                 type: 'success'
               });
-
-              store.commit("saveToken", res.result.token);
+              storeTemp.commit("saveToken", res.result);
 
               var curTime = new Date();
               var expiredate = new Date(curTime.setSeconds(curTime.getSeconds() + 60 * 60));
-              store.commit("saveTokenExpire", expiredate);
+              storeTemp.commit("saveTokenExpire", expiredate);
 
               error.config.__isRetryRequest = true;
-              error.config.headers.Authorization = 'Bearer ' + res.token;
+              error.config.headers.Authorization = 'Bearer ' + res.result;
               return request(error.config);
             } else {
               // 刷新token失败 清除token信息并跳转到登录页面

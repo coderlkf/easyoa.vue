@@ -11,7 +11,9 @@ export default new Vuex.Store({
     tokenExpire: null,
     currentPage: '未知页面',//当前页面标题
     uinfo: null,
-    mainMenu: []
+    mainMenu: [],
+    roleMap: {},
+    roles: []
   },
   mutations,
   actions,
