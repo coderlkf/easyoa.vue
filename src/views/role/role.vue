@@ -42,6 +42,8 @@
             <el-button size="mini"
                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini"
+                       @click="handelEditPermissions(scope.$index, scope.row)">配置权限</el-button>
+            <el-button size="mini"
                        type="danger"
                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
@@ -116,12 +118,50 @@
                      @click="edit('editForm')">确 定</el-button>
         </span>
       </el-dialog>
+      <!-- 权限窗口 -->
+      <el-dialog title="编辑权限"
+                 :visible.sync="permissionsDialogVisible"
+                 width="50%">
+        <el-row v-for="permission in permissions"
+                :key="permission.id">
+          <el-col :span="permission.permissions.length>0?3:24">
+            <el-checkbox :label="permission.name"
+                         @click.native="mmChange($event,permission.id)"></el-checkbox>
+            <!-- {{permission.name}} -->
+          </el-col>
+          <el-col :span="21">
+            <el-checkbox v-for="pm in permission.permissions"
+                         :key="pm.code"
+                         :label="pm.name"
+                         v-model="pm.isCheck">
+            </el-checkbox>
+          </el-col>
+          <el-col :span="22"
+                  :push="2"
+                  v-for="cm in permission.children"
+                  :key="cm.id">
+            <el-checkbox :label="cm.name"
+                         @click.native="cmChange($event,permission.id,cm.id)"></el-checkbox>
+            <el-checkbox v-for="cpm in cm.permissions"
+                         :key="cpm.code"
+                         :label="cpm.name"
+                         v-model="cpm.isCheck">
+            </el-checkbox>
+          </el-col>
+        </el-row>
+        <span slot="footer"
+              class="dialog-footer">
+          <el-button @click="permissionsDialogVisible = false">取 消</el-button>
+          <el-button type="primary"
+                     @click="editPermissions">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import { getRoleList, editRole, addRole, delRole } from '../../api/api'
+import { getRoleList, editRole, addRole, delRole, getMenuPermissions, setRolePermissions } from '../../api/api'
 
 export default {
   data () {
@@ -131,6 +171,8 @@ export default {
       pageIndex: 1,
       addDialogVisible: false,
       editDialogVisible: false,
+      permissionsDialogVisible: false,
+      currentEditId: 0,
       roles: [],
       addForm: {
         id: 0,
@@ -143,6 +185,16 @@ export default {
           { required: true, message: '请输入角色名称', trigger: 'blur' }
         ]
       },
+      permissions: [{
+        id: 0,
+        name: '',
+        permissions: [],
+        children: [{
+          id: 0,
+          name: '',
+          permissions: []
+        }]
+      }]
     }
   },
   created () {
@@ -218,6 +270,15 @@ export default {
       this.editDialogVisible = true
       // console.log(index, row);
     },
+    handelEditPermissions (index, row) {
+      this.currentEditId = row.id
+      getMenuPermissions().then(res => {
+        if (res.issuccess) {
+          this.permissions = res.result
+        }
+      })
+      this.permissionsDialogVisible = true
+    },
     handleDelete (index, row) {
       // console.log(index, row);
       const _this = this
@@ -248,6 +309,51 @@ export default {
       this.pageIndex = page
       this.getlist(params)
     },
+    // 使菜单下的复选框全选
+    mmChange (e, id) {
+      if (e.target.tagName !== 'INPUT') return
+      let isCheck = e.target.checked
+      for (let m of this.permissions) {
+        if (m.id === id) {
+          for (let p of m.permissions)
+            p.isCheck = isCheck
+          for (let cm of m.children) {
+            for (let cp of cm.permissions)
+              cp.isCheck = isCheck
+          }
+        }
+      }
+    },
+    // 子菜单复选框全选
+    cmChange (e, id, cid) {
+      if (e.target.tagName !== 'INPUT') return
+      let isCheck = e.target.checked
+      for (let m of this.permissions) {
+        if (m.id === id) {
+          for (let cm of m.children) {
+            if (cm.id === cid) {
+              for (let cp of cm.permissions)
+                cp.isCheck = isCheck
+            }
+          }
+        }
+      }
+    },
+    // 提交编辑的权限
+    editPermissions () {
+      let data = new FormData()
+      data.append('id', this.currentEditId)
+      data.append('permissions', JSON.stringify(this.permissions))
+      setRolePermissions(data).then(res => {
+        if (res.issuccess) {
+          this.$message({
+            message: '设置成功',
+            type: 'success'
+          })
+          this.permissionsDialogVisible = false
+        }
+      })
+    }
   }
 }
 </script>

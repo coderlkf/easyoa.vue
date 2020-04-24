@@ -29,6 +29,10 @@ export const delMenu = params => {
 export const delMenus = params => {
   return req.delete('menu/delbyids', { params }).then(res => res.data)
 }
+// 获取菜单权限列表
+export const getMenuPermissions = () => {
+  return req.get('menu/permissions').then(res => res.data)
+}
 
 // 获取用户信息
 export const getUserInfo = () => {
@@ -62,6 +66,10 @@ export const addRole = params => {
 // 修改角色
 export const editRole = params => {
   return req.put('role', params).then(res => res.data)
+}
+// 设置角色权限
+export const setRolePermissions = params => {
+  return req.put('role/setpermissions', params).then(res => res.data)
 }
 // 删除角色
 export const delRole = params => {
