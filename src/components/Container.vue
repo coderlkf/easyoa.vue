@@ -25,7 +25,7 @@
                 <el-avatar :size="90"
                            :src="userinfo.headUrl?sysConfig.serverUrl+userinfo.headUrl:'/logo.png'"></el-avatar>
                 <span class="uname">{{userinfo.userName}}
-                  <i :class="userinfo.gender==1?'el-icon-male':'el-icon-female'"></i>{{userinfo.age}}
+                  <i :class="userinfo.gender===1?'el-icon-male':'el-icon-female'"></i>{{userinfo.age}}
                   <br>
                   <i class="el-icon-s-custom"></i>{{$store.state.roleMap[userinfo.role]}}</span>
               </router-link>
@@ -138,7 +138,7 @@ export default {
               message: '两次输入的密码不同',
               type: 'error'
             })
-          if (this.editpwd.oldpwd == this.editpwd.repwd)
+          if (this.editpwd.oldpwd === this.editpwd.repwd)
             this.$message({
               message: '新旧密码不能相同',
               type: 'error'
@@ -173,11 +173,6 @@ export default {
     getTreeMenu().then(res => {
       // console.log(res)
       if (res.issuccess) {
-        this.$notify({
-          type: "success",
-          message: `获取菜单成功`,
-          duration: 3000
-        })
         this.menus = res.result
         let mainMenu = [{ id: 0, name: '主菜单' }]
         for (let m of res.result) {
@@ -221,6 +216,7 @@ export default {
   padding: 0 !important;
   background-color: #2b343d;
   border-left: 1px solid antiquewhite;
+  box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.9);
 }
 .collapse {
   color: antiquewhite;

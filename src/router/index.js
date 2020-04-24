@@ -12,6 +12,10 @@ import login from '../views/login.vue'
 import menu from '../views/sysmanager/menu.vue'
 // 用户管理
 import myinfo from '../views/user/userinfo.vue'
+// 角色管理
+import role from '../views/role/role.vue'
+// 员工管理
+import employee from '../views/employee/employee.vue'
 
 Vue.use(VueRouter)
 
@@ -45,6 +49,16 @@ const routes = [
     component: menu
   },
   {
+    path: '/role',
+    name: '角色管理',
+    component: role
+  },
+  {
+    path: '/employee',
+    name: '员工管理',
+    component: employee
+  },
+  {
     path: '/myinfo',
     name: '个人中心',
     component: myinfo
@@ -66,7 +80,7 @@ router.beforeEach((to, from, next) => {
   if (token) {
     store.commit("saveToken", token);
   }
-  if (to.path != '/login' && token == '') {
+  if (to.path != '/login' && token === '') {
     next('/login')
   }
   next()

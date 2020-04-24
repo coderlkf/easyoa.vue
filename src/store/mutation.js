@@ -18,10 +18,11 @@ export default {
     state.mainMenu = data
   },
   saveRoleMap (state, data) {
-    state.roles = data
+    state.roles = [{ id: 0, name: '系统管理员' }]
     let roleMap = { 0: '系统管理员' }
     for (let role of data) {
       roleMap[role.id] = role.name
+      state.roles.push(role)
     }
     state.roleMap = roleMap
   }

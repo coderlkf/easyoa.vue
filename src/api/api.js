@@ -51,3 +51,36 @@ export const uploadHeadUrl = params => {
 export const getRoles = () => {
   return req.get('role').then(res => res.data)
 }
+// 获取角色列表
+export const getRoleList = params => {
+  return req.get('role/list', { params }).then(res => res.data)
+}
+// 添加角色
+export const addRole = params => {
+  return req.post('role', params).then(res => res.data)
+}
+// 修改角色
+export const editRole = params => {
+  return req.put('role', params).then(res => res.data)
+}
+// 删除角色
+export const delRole = params => {
+  return req.delete('role', { params }).then(res => res.data)
+}
+
+// 获取员工列表
+export const getEmployeeList = params => {
+  return req.get('employee', { params }).then(res => res.data)
+}
+// 添加员工
+export const addEmployee = params => {
+  return req.post('employee', params).then(res => res.data)
+}
+// 修改员工
+export const editEmployee = params => {
+  return req.put('employee', params).then(res => res.data)
+}
+// 删除员工
+export const delEmployee = params => {
+  return req.delete('employee', { params }).then(res => res.data)
+}

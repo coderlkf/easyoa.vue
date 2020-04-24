@@ -88,12 +88,12 @@ export default {
       this.$refs.ruleForm2.resetFields();
     },
     loginAccount () {
-      if (this.account3 == "测试账号1") {
+      if (this.account3 === "测试账号1") {
         this.ruleForm2.account = "admin";
         this.ruleForm2.checkPass = "123456";
-      } else if (this.account3 == "测试账号2") {
-        this.ruleForm2.account = "test2";
-        this.ruleForm2.checkPass = "test2";
+      } else if (this.account3 === "测试账号2") {
+        this.ruleForm2.account = "test";
+        this.ruleForm2.checkPass = "123456";
       } else {
         this.ruleForm2.account = "blogadmin";
         this.ruleForm2.checkPass = "blogadmin";

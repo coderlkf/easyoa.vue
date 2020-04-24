@@ -289,7 +289,7 @@ export default {
       this.$confirm('真的要删除' + this.selectids + '吗', '请确认', {
         type: 'error',
         callback (action) {
-          if (action == 'confirm') {
+          if (action === 'confirm') {
             delMenus({ ids: _this.selectids.join(',') }).then(res => {
               if (res.issuccess) {
                 _this.$message({
@@ -337,7 +337,7 @@ export default {
       this.$confirm('真的要删除' + row.name + '吗', '请确认', {
         type: 'error',
         callback (action) {
-          if (action == 'confirm') {
+          if (action === 'confirm') {
             delMenu({ id: row.id }).then(res => {
               if (res.issuccess) {
                 _this.$message({

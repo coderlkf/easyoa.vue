@@ -32,7 +32,7 @@ request.interceptors.response.use(
   error => {
     // 超时请求处理
     var originalRequest = error.config;
-    if (error.code == 'ECONNABORTED' && error.message.indexOf('timeout') != -1 && !originalRequest._retry) {
+    if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') != -1 && !originalRequest._retry) {
 
       Vue.prototype.$message({
         message: '请求超时！',
@@ -42,7 +42,7 @@ request.interceptors.response.use(
       return null;
     }
     if (error.response) {
-      if (error.response.status == 401) {
+      if (error.response.status === 401) {
         var curTime = new Date()
         var refreshtime = new Date(Date.parse(window.localStorage.refreshtime))
         // 在用户操作的活跃期内
@@ -50,7 +50,7 @@ request.interceptors.response.use(
           return refreshToken({ token: window.localStorage.Token }).then((res) => {
             if (res.issuccess) {
               Vue.prototype.$message({
-                message: 'refreshToken success! loading data...',
+                message: '刷新token，重新请求',
                 type: 'success'
               });
               storeTemp.commit("saveToken", res.result);
@@ -74,7 +74,7 @@ request.interceptors.response.use(
 
       }
       // 403 无权限
-      if (error.response.status == 403) {
+      if (error.response.status === 403) {
         Vue.prototype.$message({
           message: '失败！该操作无权限',
           type: 'error'
@@ -82,7 +82,7 @@ request.interceptors.response.use(
         return null;
       }
       // 429 ip限流
-      if (error.response.status == 429) {
+      if (error.response.status === 429) {
         Vue.prototype.$message({
           message: '刷新次数过多，请稍事休息重试！',
           type: 'error'
