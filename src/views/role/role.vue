@@ -272,7 +272,7 @@ export default {
     },
     handelEditPermissions (index, row) {
       this.currentEditId = row.id
-      getMenuPermissions().then(res => {
+      getMenuPermissions({ id: row.id }).then(res => {
         if (res.issuccess) {
           this.permissions = res.result
         }

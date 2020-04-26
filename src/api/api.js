@@ -30,8 +30,8 @@ export const delMenus = params => {
   return req.delete('menu/delbyids', { params }).then(res => res.data)
 }
 // 获取菜单权限列表
-export const getMenuPermissions = () => {
-  return req.get('menu/permissions').then(res => res.data)
+export const getMenuPermissions = params => {
+  return req.get('menu/permissions', { params }).then(res => res.data)
 }
 
 // 获取用户信息

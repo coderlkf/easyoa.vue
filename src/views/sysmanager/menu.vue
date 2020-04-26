@@ -39,11 +39,13 @@
         </template>
       </el-table-column>
       <el-table-column prop="path"
-                       label="路由"></el-table-column>
+                       label="路由"
+                       width="100"></el-table-column>
       <el-table-column prop="actionList"
                        label="api"></el-table-column>
       <el-table-column prop="description"
-                       label="说明"></el-table-column>
+                       label="说明"
+                       width="100"></el-table-column>
       <el-table-column label="是否禁用"
                        width="80">
         <template slot-scope="scope">
@@ -57,8 +59,10 @@
                        width="60"></el-table-column>
       <el-table-column prop="createTime"
                        label="创建时间"
-                       sortable></el-table-column>
-      <el-table-column label="操作">
+                       sortable
+                       width="160"></el-table-column>
+      <el-table-column label="操作"
+                       width="150">
         <template slot-scope="scope">
           <el-button size="mini"
                      @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
